@@ -16,16 +16,39 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>ate</phon>
+        <phon>comió</phon>
         <syn>
             <cat>V</cat>
-            <sel>N</sel>
-            <sel>N</sel>
+            <sel>D</sel>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+        <word>
+        <phon>ladra</phon>
+        <syn>
+            <cat>V</cat>
+            <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>apples</phon>
+        <phon>manzanas</phon>
+        <syn>
+            <cat>D</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>el</phon>
+        <syn>
+            <cat>D</cat>
+            <sel>N</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+        <word>
+        <phon>perro</phon>
         <syn>
             <cat>N</cat>
         </syn>
