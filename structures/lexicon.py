@@ -11,10 +11,13 @@ class Lexicon(object):
     """
     Definition 3: A lexicon is a finite set of lexical items.
     """
-    def __init__(self):
+    def __init__(self,file_name=None):
         self.lex: Set[LexicalItem] = set()
         # get the file path to lexicon data
-        file_name = "lexicon.xml"
+        if file_name == None:
+            file_name = "lexicon.xml"
+        else:
+            file_name = file_name
         full_file = os.path.abspath(os.path.join("data", file_name))
         # create xml tree
         dom = ElementTree.parse(full_file)
