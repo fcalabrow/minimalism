@@ -180,6 +180,15 @@ class SyntacticObject(object):
         else:
             return False
 
+    def is_final(self, syster, workspace):
+        if self.c_commands(self, workspace):
+            if syster.immediately_contains(self):
+                return True
+            else:
+                return False
+        else:
+            return True
+    
     def is_derivable(self, lexicon): # Not implemented
         """
         DEFINITION 15:

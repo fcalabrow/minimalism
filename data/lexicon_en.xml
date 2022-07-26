@@ -1,10 +1,17 @@
 <?xml version='1.0' ?>
 <root>
     <word>
-        <phon>corrió</phon>
+        <phon>K8</phon>
+        <syn>
+            <cat>N</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>runs</phon>
         <syn>
             <cat>V</cat>
-            <sel>D</sel>
+            <sel>N</sel>
         </syn>
         <sem>none</sem>
     </word>
@@ -18,7 +25,7 @@
         <sem>none</sem>
     </word>
         <word>
-        <phon>llegó</phon>
+        <phon>cayó</phon>
         <syn>
             <cat>V</cat>
             <sel>D</sel>
@@ -26,10 +33,18 @@
         </syn>
         <sem>none</sem>
     </word>
-    <word>
-        <phon>hueso</phon>
+        <word>
+        <phon>ladra</phon>
         <syn>
-            <cat>N</cat>
+            <cat>V</cat>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>manzanas</phon>
+        <syn>
+            <cat>D</cat>
         </syn>
         <sem>none</sem>
     </word>

@@ -9,6 +9,16 @@ class Derivation(derivation.Derivation):
     def transfer(self,so):
         list_from_set = list(so.syntactic_object_set)
         x,y = list_from_set[0],list_from_set[1]
+        W = list(self.stages[-1].workspace.w)[0]
+        
+        empty_li = LexicalItem({Cat_Feature('E')},{Sem_Feature('')},{Phon_Feature("")})
+        self.i_lang.lexicon.lex.add(empty_li)
+        empty_so = LexicalItemToken(empty_li,0)
+        if x.is_final(y,W) == False:
+            x = empty_so
+        if y.is_final(x,W) == False:
+            y = empty_so
+
         if type(x) == LexicalItemToken and type(y) == LexicalItemToken:
             if len(x.triggers) != 0: # if head
                 self.transferred_sentence.append(list(x.lexical_item.phon)[0].label)
@@ -23,13 +33,14 @@ class Derivation(derivation.Derivation):
             else: # if specifier
                 self.transfer(x)
                 self.transfer(y)
-        else: # internal merge
-            if type(x) == LexicalItemToken:
+        else:
+            if type(x) == LexicalItemToken and type(y) == SyntacticObjectSet:
                 self.transferred_sentence.append(list(x.lexical_item.phon)[0].label)
-                for z in list(y.syntactic_object_set):
-                    if z.lexical_item != x.lexical_item:
-                        self.transferred_sentence.append(list(z.lexical_item.phon)[0].label)
-    
+                self.transfer(y)
+            elif type(y) == LexicalItemToken and type(x) == SyntacticObjectSet:
+                self.transferred_sentence.append(list(y.lexical_item.phon)[0].label)
+                self.transfer(x)
+
     def autotf(self, index):
         self.print_derivation()
         x = self.stages[-1].workspace.find_workspace(index) # get x
@@ -37,14 +48,15 @@ class Derivation(derivation.Derivation):
         # Rule 1 - Successful derivation
         if len(x.triggers) == 0 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0:
             print('Aplying transfer')
+            self.transferred_sentence = []
             self.transfer(x)
+            self.transferred_sentence = [word for word in self.transferred_sentence if word != '']
             self.transferred_sentence = ' '.join(self.transferred_sentence)
             if self.transferred_sentence == self.sentence_to_parse:
                 print("Successfull parsing!")
                 print('')
                 return True
             else:
-                #print('Transferred sentence: ',self.transferred_sentence)
                 return None
 
         # Rule 2
@@ -84,8 +96,8 @@ class Derivation(derivation.Derivation):
             print('Aplying rule 5: external merge (Y,X)')
             print('')
             for y in self.stages[-1].workspace.w:
-                features = [trigger for trigger in y.triggers]
-                if len(features) > 0 and x.category.label == features[0].label:
+                features = [trigger.label for trigger in y.triggers]
+                if len(features) > 0 and x.category.label in features:
                     self.automerge(y.idx,index)
                     return True
                 # Rule 7 
@@ -101,9 +113,9 @@ class Derivation(derivation.Derivation):
         if len(x.triggers) > 0 and len(self.stages[-1].workspace.w) == 2:
             print('Aplying rule 6: external merge (X,Y)')
             print('')
-            features = [trigger for trigger in x.triggers]
+            features = [trigger.label for trigger in x.triggers]
             for y in self.stages[-1].workspace.w:
-                if y.category.label == features[0].label:
+                if y.category.label in features:
                     self.automerge(index,y.idx)
                     return True
             return None
@@ -168,4 +180,4 @@ def parse(sentence,filename="lexicon.xml"):
     list = phrase_to_list(lexicon, sentence)
     deriv = Derivation(i_lang, word_list=list)
     deriv.autoderive(sentence)
-    del deriv
+    #del deriv
