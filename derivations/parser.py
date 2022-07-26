@@ -1,3 +1,4 @@
+import re
 from structures import *
 from derivations import derivation
 
@@ -174,6 +175,7 @@ def phrase_to_list(lexicon, phrase):
     return list
 
 def parse(sentence,filename="lexicon.xml"):
+    sentence = ' '.join(((re.sub("[\.\,\!\?\:\;\-\=¿¡\|\(\)#\[\]\"]", "", sentence).lower()).split()))
     lexicon = Lexicon(filename)
     ug = UniversalGrammar(set(), set(), set())
     i_lang = ILanguage(lexicon, ug)
