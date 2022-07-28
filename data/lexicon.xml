@@ -4,7 +4,6 @@
         <phon>corrió</phon>
         <syn>
             <cat>V</cat>
-            <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>
@@ -45,6 +44,15 @@
         <phon>perro</phon>
         <syn>
             <cat>N</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>[]</phon>
+        <syn>
+            <cat>v</cat>
+            <sel>V</sel>
+            <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>

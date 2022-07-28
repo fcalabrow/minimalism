@@ -1,7 +1,6 @@
-__all__ = ["Feature", "Syn_Feature", "Sem_Feature", "Cat_Feature", "Sel_Feature", "Phon_Feature",
+__all__ = ["Feature", "Syn_Feature", "Sem_Feature", "Cat_Feature", "Sel_Feature", "Phon_Feature","Trigger_Feature",
            "UniversalGrammar", "ILanguage", "SyntacticObject", "SyntacticObjectSet", "LexicalItem",
-           "LexicalArray", "Workspace", "Stage",
-           "Lexicon", "LexicalItemToken", "tree", "InteractionError"]
+           "LexicalArray", "Workspace", "Stage","Lexicon", "LexicalItemToken", "tree", "InteractionError"]
 
 from .definitions import *
 from .features import *

@@ -51,7 +51,7 @@ class Derivation(derivation.Derivation):
             print('Aplying transfer')
             self.transferred_sentence = []
             self.transfer(x)
-            self.transferred_sentence = [word for word in self.transferred_sentence if word != '']
+            self.transferred_sentence = [word for word in self.transferred_sentence if word != '' and not word.startswith('[')]
             self.transferred_sentence = ' '.join(self.transferred_sentence)
             if self.transferred_sentence == self.sentence_to_parse:
                 print("Successfull parsing!")
@@ -170,16 +170,45 @@ def phrase_to_list(lexicon, phrase):
     """ Param: phrase (str)
     Return: list of lexical_item """
     phrase = phrase.split()
-    list = [word_to_lex(lexicon, w) for w in phrase]
-    list.reverse()
-    return list
+    new_list = [word_to_lex(lexicon, w) for w in phrase]
+    new_list.reverse()
+    return new_list
+
+def add_functional_categories(word_list,functional_list):
+    
+    def get_fc_index(word_list):
+        counter = 0
+        for word in word_list:
+            index = word_list.index(word)
+            word_triggers = [t.label for t in word.syn if isinstance(t,Trigger_Feature)]
+            counter += len(word_triggers)
+            for w in word_list[index:index+2*len(word_triggers)]:
+                w_triggers = [t.label for t in w.syn if isinstance(t,Trigger_Feature)]
+                w_category = [c.label for c in word.syn if isinstance(c,Cat_Feature)]
+                if w_category in word_triggers:
+                    counter += len(w_triggers)
+        return counter
+    
+    for word in word_list.copy():
+        category = [c.label for c in word.syn if isinstance(c,Cat_Feature)]
+        for fcw in functional_list:
+            triggers = [t.label for t in fcw.syn if isinstance(t,Trigger_Feature)]
+            if category[0] in triggers:
+                if fcw not in word_list:
+                    index = get_fc_index(word_list)
+                    word_list.insert(index,fcw)
+    return word_list
 
 def parse(sentence,filename="lexicon.xml"):
     sentence = ' '.join(((re.sub("[\.\,\!\?\:\;\-\=¿¡\|\(\)#\[\]\"]", "", sentence).lower()).split()))
     lexicon = Lexicon(filename)
     ug = UniversalGrammar(set(), set(), set())
     i_lang = ILanguage(lexicon, ug)
-    list = phrase_to_list(lexicon, sentence)
-    deriv = Derivation(i_lang, word_list=list)
-    deriv.autoderive(sentence)
+    word_list = phrase_to_list(lexicon, sentence)
+    functional_list = [item for item in lexicon.lex if (list(item.phon))[0].label.startswith('[')]
+    word_list = add_functional_categories(word_list,functional_list)
+    deriv = Derivation(i_lang, word_list=word_list)
+    #deriv.autoderive(sentence)
+    for w in word_list:
+         print(list(w.phon)[0].label)
     #del deriv
