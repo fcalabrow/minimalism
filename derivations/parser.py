@@ -45,7 +45,9 @@ class Derivation(derivation.Derivation):
     def autotf(self, index):
         self.print_derivation()
         x = self.stages[-1].workspace.find_workspace(index) # get x
-
+        triggers = [trigger for trigger in x.triggers]
+        trigger_labels = [trigger.label for trigger in triggers]
+        
         # Rule 1 - Successful derivation
         if len(x.triggers) == 0 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0:
             print('Aplying transfer')
@@ -61,44 +63,51 @@ class Derivation(derivation.Derivation):
                 return None
 
         # Rule 2
-        if len(x.triggers) > 1 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0 and type(x) != SyntacticObjectSet:
+        if len(triggers) > 1 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0 and type(x) != SyntacticObjectSet:
             return None
 
         # Rule 3 - Internal merge
-        if len(x.triggers) == 1 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0 and type(x) == SyntacticObjectSet:
-            features = [trigger for trigger in x.triggers]
-            if features[0].label[-1] == '/':
-                features[0].label = features[0].label[0:-1]
-                print('Aplying rule 3: internal merge (X,Y)')
-                print('')
-                for y in x.syntactic_object_set:
-                    if y.category.label == features[0].label:
-                        self.automerge(index,y.idx)
-                        return True
-                    elif type(y) == SyntacticObjectSet:
-                        for z in y:
-                            features = [trigger for trigger in x.triggers]
-                            if z.category.label == features[0].label:
-                                y = z
-                                self.automerge(index,y.idx)
-                                return True
+        if len(triggers) == 1 and triggers[0].label[-1] == '/' and len(self.stages[-1].workspace.w) == 1 and isinstance(x, SyntacticObjectSet):
+            triggers[0].label = triggers[0].label[0:-1]
+            print('Aplying rule 3: internal merge (X,Y)')
+            print('')
+            for y in x.syntactic_object_set:
+                if y.category.label == triggers[0].label:
+                    self.automerge(index,y.idx)
+                    return True
+                elif isinstance(y, SyntacticObjectSet):
+                    for z in y.syntactic_object_set:
+                        if z.category.label == triggers[0].label:
+                            y = z
+                            self.automerge(index,y.idx)
+                            return True
             return None
 
         # Rule 4 - Select
         if len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) > 0:
             print('Aplying rule 4: select(Y)')
             print('')
-            list = [y.idx for y in self.stages[-1].lexical_array.the_list]
-            self.autoselect(min(list))
+            for li in self.stages[-1].lexical_array.the_list:
+                if (list(li.lexical_item.phon)[0]).label.startswith('[') and len(x.triggers) == 0:
+                    triggers_fc = [re.sub("/","",trigger.label) for trigger in li.triggers if trigger.label.startswith('/')]
+                    if x.category.label in triggers_fc:
+                        for trigger in li.triggers:
+                            if trigger.label.startswith("/"):
+                                trigger.label = re.sub("/","",trigger.label)
+                        self.autoselect(li.idx)
+                        return True
+
+            list_of_idxs = [y.idx for y in self.stages[-1].lexical_array.the_list]
+            self.autoselect(min(list_of_idxs))
             return True
 
         # Rule 5 - External merge (Y,X)
-        if len(x.triggers) == 0 and len(self.stages[-1].workspace.w) == 2:
+        if len(triggers) == 0 and len(self.stages[-1].workspace.w) == 2:
             print('Aplying rule 5: external merge (Y,X)')
             print('')
             for y in self.stages[-1].workspace.w:
-                features = [trigger.label for trigger in y.triggers]
-                if len(features) > 0 and x.category.label in features:
+                triggers_y = [trigger.label for trigger in y.triggers]
+                if len(triggers_y) > 0 and x.category.label in triggers_y:
                     self.automerge(y.idx,index)
                     return True
                 # Rule 7 
@@ -111,12 +120,11 @@ class Derivation(derivation.Derivation):
             return None
 
         # Rule 6 - External merge (X,Y)
-        if len(x.triggers) > 0 and len(self.stages[-1].workspace.w) == 2:
+        if len(triggers) > 0 and len(self.stages[-1].workspace.w) == 2:
             print('Aplying rule 6: external merge (X,Y)')
             print('')
-            features = [trigger.label for trigger in x.triggers]
             for y in self.stages[-1].workspace.w:
-                if y.category.label in features:
+                if y.category.label in trigger_labels:
                     self.automerge(index,y.idx)
                     return True
             return None
@@ -175,29 +183,15 @@ def phrase_to_list(lexicon, phrase):
     return new_list
 
 def add_functional_categories(word_list,functional_list):
-    
-    def get_fc_place(word, word_list):
-        counter = 0
-        for w1 in word_list:
-            if w1 == word:
-                w1_index = word_list.index(word)
-                w1_triggers = [t.label for t in word.syn if isinstance(t,Trigger_Feature)]
-                counter += len(w1_triggers)
-                for w2 in word_list[index:index+2*len(word_triggers)]:
-                    w2_triggers = [t.label for t in w2.syn if isinstance(t,Trigger_Feature)]
-                    w2_category = [c.label for c in w2.syn if isinstance(c,Cat_Feature)]
-                    if w2_category in w1_triggers and w1_index == 0:
-                        counter += len(w2_triggers)
-        return counter
-    
-    for word in word_list.copy():
+    words_with_fc = []
+    for word in word_list:
         category = [c.label for c in word.syn if isinstance(c,Cat_Feature)]
         for fcw in functional_list:
-            triggers = [t.label for t in fcw.syn if isinstance(t,Trigger_Feature)]
+            triggers = [re.sub("/","",t.label) for t in fcw.syn if isinstance(t,Trigger_Feature) and t.label.startswith('/')]
             if category[0] in triggers:
-                if fcw not in word_list:
-                    place_to_insert = get_fc_place(word, word_list)
-                    word_list.insert(place_to_insert,fcw)
+                if fcw not in word_list and word not in words_with_fc:
+                    word_list.append(fcw)
+                    words_with_fc.append(word)
     return word_list
 
 def parse(sentence,filename="lexicon.xml"):
@@ -209,7 +203,5 @@ def parse(sentence,filename="lexicon.xml"):
     functional_list = [item for item in lexicon.lex if (list(item.phon))[0].label.startswith('[')]
     word_list = add_functional_categories(word_list,functional_list)
     deriv = Derivation(i_lang, word_list=word_list)
-    #deriv.autoderive(sentence)
-    for w in word_list:
-         print(list(w.phon)[0].label)
+    deriv.autoderive(sentence)
     #del deriv
