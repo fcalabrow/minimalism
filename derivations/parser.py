@@ -176,17 +176,18 @@ def phrase_to_list(lexicon, phrase):
 
 def add_functional_categories(word_list,functional_list):
     
-    def get_fc_index(word_list):
+    def get_fc_place(word, word_list):
         counter = 0
-        for word in word_list:
-            index = word_list.index(word)
-            word_triggers = [t.label for t in word.syn if isinstance(t,Trigger_Feature)]
-            counter += len(word_triggers)
-            for w in word_list[index:index+2*len(word_triggers)]:
-                w_triggers = [t.label for t in w.syn if isinstance(t,Trigger_Feature)]
-                w_category = [c.label for c in word.syn if isinstance(c,Cat_Feature)]
-                if w_category in word_triggers:
-                    counter += len(w_triggers)
+        for w1 in word_list:
+            if w1 == word:
+                w1_index = word_list.index(word)
+                w1_triggers = [t.label for t in word.syn if isinstance(t,Trigger_Feature)]
+                counter += len(w1_triggers)
+                for w2 in word_list[index:index+2*len(word_triggers)]:
+                    w2_triggers = [t.label for t in w2.syn if isinstance(t,Trigger_Feature)]
+                    w2_category = [c.label for c in w2.syn if isinstance(c,Cat_Feature)]
+                    if w2_category in w1_triggers and w1_index == 0:
+                        counter += len(w2_triggers)
         return counter
     
     for word in word_list.copy():
@@ -195,8 +196,8 @@ def add_functional_categories(word_list,functional_list):
             triggers = [t.label for t in fcw.syn if isinstance(t,Trigger_Feature)]
             if category[0] in triggers:
                 if fcw not in word_list:
-                    index = get_fc_index(word_list)
-                    word_list.insert(index,fcw)
+                    place_to_insert = get_fc_place(word, word_list)
+                    word_list.insert(place_to_insert,fcw)
     return word_list
 
 def parse(sentence,filename="lexicon.xml"):
