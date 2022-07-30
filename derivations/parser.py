@@ -1,4 +1,5 @@
 import re
+import itertools
 from structures import *
 from derivations import derivation
 
@@ -193,6 +194,21 @@ def add_functional_categories(word_list,functional_list):
                     word_list.append(fcw)
                     words_with_fc.append(word)
     return word_list
+
+def get_all_posible_item_lists(lexicon):
+    duplicates = []
+    for item1 in lexicon.lex:
+        phon1 = list(item1.phon)[0].label
+        category1 = list(item1.syn)[0].label
+        for item2 in lexicon.lex:
+            phon2 = list(item2.phon)[0].label
+            category2 = list(item2.syn)[0].label
+            if phon1 == phon2 and category1 == category2:
+                duplicates.append([item1,item2])
+
+    all_possibilities = list(itertools.product(*duplicates))
+    return all_possibilities
+
 
 def parse(sentence,filename="lexicon.xml"):
     sentence = ' '.join(((re.sub("[\.\,\!\?\:\;\-\=¿¡\|\(\)#\[\]\"]", "", sentence).lower()).split()))
