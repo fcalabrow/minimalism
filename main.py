@@ -38,7 +38,6 @@ def main():
         if user_input == '1':
             sentence = input(f'Insert a sentence to parse:{new_line}')
             try:
-                #agregar preprocesamiento
                 parse(sentence,filename)
             except AssertionError:
                 print(f"{new_line}[ERROR] Some words are not in the lexicon{new_line}")
