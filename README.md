@@ -47,4 +47,9 @@ Para indicar que un item léxico es una categoría funcional se necesitan dos co
         <sem>none</sem>
     </word>
 ```
-Dada esta gramática, una oración como *El perro llegó* generaría los siguientes *stages*: una vez satisfechos los rasgos de selección del *V*, el *v* será seleccionado, luego se combinará por merge externo con el *V*, y finalmente el *v* se combinará por merge interno con el *D*.
+Dada esta gramática, una oración como *El perro llegó* atravesaría las siguientes etapas: una vez satisfechos los rasgos de selección del *V*, el *v* es seleccionado, luego se combina por merge externo con el *V*, y finalmente se combinar por merge interno con el *D*, dando lugar a la siguiente estructura:
+
+![](https://img001.prntscr.com/file/img001/YnnsxD8ASmy8ea0zR2ilIQ.png)
+Como se ve, es posible definir una gramática de tal modo que dos o más categorías funcionales se combinen entre sí.
+<br>También es posible definir dos ítems con los mismos ragos fonológicos y categoriales, pero diferentes rasgos de selección. En este caso, el programa generará dos lexical arrays distintos, e imprimirá todas las derivaciones exitosas. 
+### Implementación
