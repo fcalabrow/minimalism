@@ -52,5 +52,7 @@ Dada esta gramática, una oración como *El perro llegó* atravesaría las sigui
 ![](https://img001.prntscr.com/file/img001/YnnsxD8ASmy8ea0zR2ilIQ.png)
 
 Como se ve, es posible definir una gramática de tal modo que dos o más categorías funcionales se combinen entre sí.
-<br>También es posible definir dos ítems con los mismos ragos fonológicos y categoriales, pero diferentes rasgos de selección. En este caso, el programa generará dos lexical arrays distintos, e imprimirá todas las derivaciones exitosas. 
+<br>También es posible definir dos ítems con los mismos rasgos fonológicos y categoriales, pero diferentes rasgos de selección. En este caso, el programa generará dos lexical arrays distintos, e imprimirá todas las derivaciones exitosas. 
 ### Implementación
+### Ventajas
+### Problemas
