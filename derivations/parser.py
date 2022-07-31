@@ -1,10 +1,10 @@
 import re
-import itertools
 from structures import *
 from derivations import derivation
 
 class Derivation(derivation.Derivation):
     
+    successfull_derivation = None
     sentence_to_parse = ''
     transferred_sentence = []
 
@@ -21,14 +21,14 @@ class Derivation(derivation.Derivation):
         if y.is_final(x,W) == False:
             y = empty_so
 
-        if type(x) == LexicalItemToken and type(y) == LexicalItemToken:
+        if isinstance(x,LexicalItemToken) and isinstance(y,LexicalItemToken):
             if len(x.triggers) != 0: # if head
                 self.transferred_sentence.append(list(x.lexical_item.phon)[0].label)
                 self.transferred_sentence.append(list(y.lexical_item.phon)[0].label)
             else: # if complement
                 self.transferred_sentence.append(list(y.lexical_item.phon)[0].label)
                 self.transferred_sentence.append(list(x.lexical_item.phon)[0].label)
-        elif type(x) == SyntacticObjectSet and type(y) == SyntacticObjectSet:
+        elif isinstance(x,SyntacticObjectSet) and isinstance(y,SyntacticObjectSet):
             if len(x.triggers) != 0: # if head
                 self.transfer(y)
                 self.transfer(x)
@@ -36,16 +36,16 @@ class Derivation(derivation.Derivation):
                 self.transfer(x)
                 self.transfer(y)
         else:
-            if type(x) == LexicalItemToken and type(y) == SyntacticObjectSet:
+            if isinstance(x,LexicalItemToken) and isinstance(y,SyntacticObjectSet):
                 self.transferred_sentence.append(list(x.lexical_item.phon)[0].label)
                 self.transfer(y)
-            elif type(y) == LexicalItemToken and type(x) == SyntacticObjectSet:
+            elif isinstance(y,LexicalItemToken) and isinstance(x,SyntacticObjectSet):
                 self.transferred_sentence.append(list(y.lexical_item.phon)[0].label)
                 self.transfer(x)
 
     def autotf(self, index, debug = False):
         if debug == True:
-            self.print_derivation()
+                self.print_derivation()
         x = self.stages[-1].workspace.find_workspace(index) # get x
         triggers = [trigger for trigger in x.triggers]
         trigger_labels = [trigger.label for trigger in triggers]
@@ -58,33 +58,38 @@ class Derivation(derivation.Derivation):
             self.transfer(x)
             self.transferred_sentence = [word for word in self.transferred_sentence if word != '' and not word.startswith('[')]
             self.transferred_sentence = ' '.join(self.transferred_sentence)
+            if debug == True:
+                print('Transferred sentence:',self.transferred_sentence)
             if self.transferred_sentence == self.sentence_to_parse:
-                self.print_derivation()
-                print("Successfull parsing!")
-                print('')
+                if debug == True:
+                    self.print_derivation()
+                    print("Successfull parsing!")
+                    print('')
+                self.successfull_derivation = self
                 return True
             else:
                 return None
 
         # Rule 2
-        if len(triggers) > 1 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0 and type(x) != SyntacticObjectSet:
+        if len(triggers) > 1 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0 and isinstance(x,SyntacticObjectSet):
             return None
 
         # Rule 3 - Internal merge
         if len(triggers) == 1 and triggers[0].label[-1] == '/' and len(self.stages[-1].workspace.w) == 1 and isinstance(x, SyntacticObjectSet):
+            #x.lexical_item.copy_features()
             triggers[0].label = triggers[0].label[0:-1]
             if debug == True:
                 print('Aplying rule 3: internal merge (X,Y)')
                 print('')
             for y in x.syntactic_object_set:
                 if y.category.label == triggers[0].label:
-                    self.automerge(index,y.idx)
+                    self.automerge(index,y.idx, debug=debug)
                     return True
                 elif isinstance(y, SyntacticObjectSet):
                     for z in y.syntactic_object_set:
                         if z.category.label == triggers[0].label:
                             y = z
-                            self.automerge(index,y.idx)
+                            self.automerge(index,y.idx,debug=debug)
                             return True
             return None
 
@@ -100,11 +105,11 @@ class Derivation(derivation.Derivation):
                         for trigger in li.triggers:
                             if trigger.label.startswith("/"):
                                 trigger.label = re.sub("/","",trigger.label)
-                        self.autoselect(li.idx)
+                        self.autoselect(li.idx,debug)
                         return True
 
             list_of_idxs = [y.idx for y in self.stages[-1].lexical_array.the_list]
-            self.autoselect(min(list_of_idxs))
+            self.autoselect(min(list_of_idxs),debug)
             return True
 
         # Rule 5 - External merge (Y,X)
@@ -115,7 +120,7 @@ class Derivation(derivation.Derivation):
             for y in self.stages[-1].workspace.w:
                 triggers_y = [trigger.label for trigger in y.triggers]
                 if len(triggers_y) > 0 and x.category.label in triggers_y:
-                    self.automerge(y.idx,index)
+                    self.automerge(y.idx,index,debug=debug)
                     return True
                 # Rule 7 
             if len(self.stages[-1].lexical_array.the_list) > 0:
@@ -123,7 +128,7 @@ class Derivation(derivation.Derivation):
                         print('Aplying rule 7: select(Z)')
                         print('')
                     index_z = min([y.idx for y in self.stages[-1].lexical_array.the_list])
-                    self.autoselect(index_z)
+                    self.autoselect(index_z,debug)
                     return True
             return None
 
@@ -134,7 +139,7 @@ class Derivation(derivation.Derivation):
                 print('')
             for y in self.stages[-1].workspace.w:
                 if y.category.label in trigger_labels:
-                    self.automerge(index,y.idx)
+                    self.automerge(index,y.idx,debug=debug)
                     return True
             return None
 
@@ -143,10 +148,16 @@ class Derivation(derivation.Derivation):
             if debug == True:
                 print('Aplying rule 8: external merge(Z,Y)')
                 print('')
-            self.automerge(index,index-1)
-            return True
-
-    def autoselect(self, index, debug=False):
+            z = self.stages[-1].workspace.find_workspace(index-1)
+            if z in self.stages[-1].workspace.w:
+                self.automerge(index,index-1,debug=debug)
+                return True
+            else:
+                z_idx = max([so.idx for so in self.stages[-1].workspace.w if so!=x])
+                self.automerge(index,z_idx,debug=debug)
+                return True
+    
+    def autoselect(self, index, debug):
         last_stage = self.stages[-1]
         lexical_item_token = last_stage.lexical_array.find_lexical_array(index)
         new_stage = last_stage.select_stage(lexical_item_token)
@@ -157,7 +168,7 @@ class Derivation(derivation.Derivation):
                 print('')
              return
     
-    def automerge(self, idx1, idx2, debug = False):
+    def automerge(self, idx1, idx2, debug):
         last_stage = self.stages[-1]
         try:
             new_stage = last_stage.merge_stage(idx1, idx2)
@@ -174,9 +185,9 @@ class Derivation(derivation.Derivation):
                 print('')
              return
 
-    def autoderive(self,sentence,debug = False):
+    def autoderive(self, sentence, debug):
         self.sentence_to_parse = sentence
-        self.autoselect(0,debug=debug)
+        self.autoselect(0, debug)
 
 def word_to_lex(lexicon_list,word):
     """ Matches a word with its lexical items
@@ -198,6 +209,8 @@ def phrase_to_list(lexicon_list, phrase):
 def add_functional_categories(word_list,functional_list):
     words_with_fc = []
     for word in word_list:
+        if word == None:
+            raise AssertionError
         category = [c.label for c in word.syn if isinstance(c,Cat_Feature)]
         for fcw in functional_list:
             triggers = [re.sub("/","",t.label) for t in fcw.syn if isinstance(t,Trigger_Feature) and t.label.startswith('/')]
@@ -208,10 +221,18 @@ def add_functional_categories(word_list,functional_list):
     return word_list
 
 def get_possible_lexicons(lexicon):
+    import itertools
     duplicates = []
     for item1 in lexicon.lex:
         phon1 = [ph.label for ph in item1.phon if isinstance(ph,Phon_Feature)][0]
         category1 = [c.label for c in item1.syn if isinstance(c,Cat_Feature)][0]
+        for duplicate in duplicates:
+            for item3 in duplicate:
+                phon3 = [ph.label for ph in item3.phon if isinstance(ph,Phon_Feature)][0]
+                category3 = [c.label for c in item3.syn if isinstance(c,Cat_Feature)][0]
+                if phon1 == phon3 and phon1 == category3 and item1 not in duplicate:
+                    duplicate.append(item1)
+                    pass 
         for item2 in lexicon.lex:
             phon2 = [ph.label for ph in item2.phon if isinstance(ph,Phon_Feature)][0]
             category2 = [c.label for c in item2.syn if isinstance(c,Cat_Feature)][0]
@@ -226,32 +247,30 @@ def get_possible_lexicons(lexicon):
         all_possibilities.append(new_list)
     return all_possibilities
 
-def parse(sentence,filename="lexicon.xml",debug=False):
+def parse(sentence,filename="lexicon.xml",debug=True):
     sentence = ' '.join(((re.sub("[\.\,\!\?\:\;\-\=¿¡\|\(\)#\[\]\"]", "", sentence).lower()).split()))
     lexicon = Lexicon(filename)
     possible_lexicons = get_possible_lexicons(lexicon)
     ug = UniversalGrammar(set(), set(), set())
     i_lang = ILanguage(lexicon, ug)
-    debug = debug
-    debug_list = []
+    successfull_derivations = []
     for i in range(len(possible_lexicons)):
         word_list = phrase_to_list(possible_lexicons[i], sentence)
-        print('1:',len(word_list))
         functional_list = [item for item in possible_lexicons[i] if (list(item.phon))[0].label.startswith('[')]
-        word_list.extend(functional_list)
-        #word_list = add_functional_categories(word_list,functional_list)
-        print('2:',len(word_list))
+        word_list = add_functional_categories(word_list,functional_list)
         deriv = Derivation(i_lang, word_list=word_list)
-        debug_list.append(functional_list)
-        return(debug_list)
         deriv.autoderive(sentence, debug)
-    #return(debug_list)
-
-a = parse('el perro llegó')
-for i in a:
-    print('')
-    for z in i:
-        category1 = [c.label for c in z.syn if isinstance(c,Cat_Feature)]
-        trigger2 = [t.label for t in z.syn if isinstance(t,Trigger_Feature)]
-        print(category1)
-        print(trigger2)
+        if deriv.successfull_derivation != None:
+            successfull_derivations.append(deriv.successfull_derivation)
+    
+    if len(successfull_derivations) > 0:
+        print('')
+        print(len(successfull_derivations),"derivation(s)")
+        print('')
+        for derivation in successfull_derivations:
+            derivation.print_derivation()
+            print('')
+    else:
+        print('')
+        print('Sentence is not derivable.')
+        print('')
