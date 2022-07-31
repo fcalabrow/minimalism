@@ -1,31 +1,22 @@
 <?xml version='1.0' ?>
 <root>
     <word>
-        <phon>K8</phon>
+        <phon>run</phon>
         <syn>
-            <cat>N</cat>
+            <cat>V</cat>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>runs</phon>
+        <phon>ate</phon>
         <syn>
             <cat>V</cat>
-            <sel>N</sel>
-        </syn>
-        <sem>none</sem>
-    </word>
-    <word>
-        <phon>comió</phon>
-        <syn>
-            <cat>V</cat>
-            <sel>D</sel>
             <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>
         <word>
-        <phon>cayó</phon>
+        <phon>arrived</phon>
         <syn>
             <cat>V</cat>
             <sel>D</sel>
@@ -33,33 +24,83 @@
         </syn>
         <sem>none</sem>
     </word>
-        <word>
-        <phon>ladra</phon>
+    <word>
+        <phon>gave</phon>
         <syn>
             <cat>V</cat>
             <sel>D</sel>
+            <sel>P</sel>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>manzanas</phon>
+        <phon>bone</phon>
         <syn>
-            <cat>D</cat>
+            <cat>N</cat>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>el</phon>
+        <phon>the</phon>
         <syn>
             <cat>D</cat>
             <sel>N</sel>
         </syn>
         <sem>none</sem>
     </word>
+    <word>
+        <phon>to</phon>
+        <syn>
+            <cat>P</cat>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
         <word>
-        <phon>perro</phon>
+        <phon>dog</phon>
         <syn>
             <cat>N</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+        <word>
+        <phon>owner</phon>
+        <syn>
+            <cat>N</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>[]</phon>
+        <syn>
+            <cat>v</cat>
+            <sel>/V</sel>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>[]</phon>
+        <syn>
+            <cat>v</cat>
+            <sel>/V</sel>
+            <sel>D/</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>[]</phon>
+        <syn>
+            <cat>T</cat>
+            <sel>/v</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>[]</phon>
+        <syn>
+            <cat>C</cat>
+            <sel>/T</sel>
         </syn>
         <sem>none</sem>
     </word>
