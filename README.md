@@ -1,8 +1,8 @@
 # Parser minimalista
-Este es un parser basado en la implementación hecha por Alex Warstadt del formalismo descrito en "A Formalization of Minimalist Syntax" por Chris Collins y Edward Stabler (2016). Su objetivo es determinar si las oraciones introducidas por el usuario son o no gramaticales, y devolver en caso positivo una estructura sintáctica. 
+Este es un parser basado en la implementación de Alex Warstadt del formalismo descrito en "A Formalization of Minimalist Syntax" por Chris Collins y Edward Stabler (2016). Su objetivo es determinar si las oraciones introducidas por el usuario son o no gramaticales, y devolver en caso positivo una estructura sintáctica. 
 
 ## Modo de uso
-Para utilizar este programa es necesario ejecutar el archivo `main.py`, ubicado en la carpeta principal del repositorio. Ejecutado el archivo, aparecerá un menú de cinco opciones: 
+Para utilizar el programa es necesario ejecutar el archivo `main.py`, ubicado en la carpeta principal del repositorio. Ejecutado el archivo, el usuario verá un menú de cinco opciones: 
 
 **1. Parser** *(Permite introducir la oración a parsear)*<br>
 **2. Manual derivation** *(Permite generar la derivación manualmente, utilizando el mecanismo original de Warstadt)*<br>
@@ -52,7 +52,8 @@ Dada esta gramática, una oración como *El perro llegó* atravesaría las sigui
 ![](https://img001.prntscr.com/file/img001/YnnsxD8ASmy8ea0zR2ilIQ.png)
 
 Como se ve, es posible definir una gramática de tal modo que dos o más categorías funcionales se combinen entre sí.
-<br>También es posible definir dos ítems con los mismos rasgos fonológicos y categoriales, pero diferentes rasgos de selección. En este caso, el programa generará dos lexical arrays distintos, e imprimirá todas las derivaciones exitosas. 
+<br>También es posible declarar dos ítems con los mismos rasgos fonológicos y categoriales, pero diferentes rasgos de selección. En este caso, el programa generará dos lexical arrays distintos, e imprimirá todas las derivaciones exitosas. 
 ### Implementación
+El programa utiliza un algoritmo bottom-up que, a grandes rasgos, se basa en las siguientes reglas:
 ### Ventajas
 ### Problemas
