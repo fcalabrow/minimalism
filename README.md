@@ -11,10 +11,11 @@ Para utilizar este programa es necesario ejecutar el archivo `main.py`, ubicado 
 **5. Quit** *(Finaliza el programa)*
 
 ### La gramática
-Por defecto, el Lexicon de la gramática se genera a partir del archivo `lexicon.xml` de la carpeta `data`. Este es un documento en formato XML que organiza el léxico como un árbol de nodos. A cada ítem le corresponde un elemento con la etiqueta `<word>`, dentro del cual se insertan nuevos elementos con una etiqueta distinta para cada rasgo: la etiqueta `<phon>` corresponde a los rasgos fonológicos, `<syn>` a los sintácticos, y `<sem>` a los semánticos (aunque estos últimos no son utilizados en la implementación actual). Por ejemplo, la entrada léxica correspondiente a un verbo como "corrió" sería la siguiente:
+Por defecto, el Lexicon de la gramática se genera a partir del archivo `lexicon.xml` de la carpeta `data`. La elección de este archivo puede ser modificada mediante la opción 3 del menú principal.<br>
+Las gramáticas están definidas en formato XML, que organiza el léxico como un árbol de nodos. A cada ítem le corresponde un elemento con la etiqueta `<word>`, dentro del cual se insertan nuevos elementos con una etiqueta distinta para cada rasgo: la etiqueta `<phon>` corresponde a los rasgos fonológicos, `<syn>` a los sintácticos, y `<sem>` a los semánticos (aunque estos últimos no son utilizados en la implementación actual). Por ejemplo, la entrada léxica correspondiente a un verbo como *corrió* sería la siguiente:
 ```
     <word>
-        <phon>corrió</phon>
+        <phon>llegó</phon>
         <syn>
             <cat>V</cat>
         </syn>
@@ -25,8 +26,25 @@ Por defecto, el Lexicon de la gramática se genera a partir del archivo `lexicon
         <syn>
             <cat>V</cat>
             <sel>D</sel>
+            <sel>D/</sel>
         </syn>
         <sem>none</sem>
     </word>
 ```
-Los rasgos sintácticos se subdividen en rasgos categoriales (`Cat_Feature`) y de selección (`Trigger_Feature`). Los primeros se insertan dentro de la etiqueta `<syn>`; y los segundos, dentro de `<sel>`.
+Los rasgos sintácticos se subdividen en rasgos categoriales (`Cat_Feature`) y de selección (`Trigger_Feature`). Los primeros se insertan dentro de la etiqueta `<syn>`; y los segundos, dentro de `<sel>`. <br>
+#### Merge interno
+Los rasgos de selección pueden ir acompañados de una **barra al final** (`D/`). Este operador le indica a la gramática que el ítem léxico en cuestión se somete a merge interno junto a otro ítem con la categoría declarada (en este caso, *llegó* primero se combina mediante merge externo con un determinante, y luego se combina con este -u otro- determinante mediante merge interno, lo que en la práctica supone que el D se "mueva" o se copie a la posición de especificador del SV). Este operador hace que el merge interno sólo pueda efectuarse con ciertos ítems léxicos, y una vez que los demás rasgos de selección ya fueron cotejados. Fue necesario añadir esta restricción, que no aparece en la implementación de Warstadt, con el fin de subsanar el hecho de que los rasgos de selección (y todos los rasgos en general) carecen de orden.
+#### Categorías funcionales
+Para indicar que un item léxico es una categoría funcional se necesitan dos cosas: 1) el contenido del rasgo fonológico debe aparecer entre corchetes, y 2) la categoría del primer elemento con el que se combina debe estar precedida por una barra. La **barra al comienzo** (`/V`) permite que el algoritmo sepa en qué momento de la derivación debe seleccionarse la categoría funcional. Por ejemplo, así quedaría la entrada léxica de un *v* que se pudiera combinar con *llegó*:
+```
+    <word>
+        <phon>[]</phon>
+        <syn>
+            <cat>v</cat>
+            <sel>/V</sel>
+            <sel>D/</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+```
+Dada esta gramática, una oración como *El perro llegó* generaría los siguientes *stages*: una vez satisfechos los rasgos de selección del *V*, el *v* será seleccionado, luego se combinará por merge externo con el *V*, y finalmente el *v* se combinará por merge interno con el *D*.
