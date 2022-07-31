@@ -1,5 +1,5 @@
 # Parser minimalista
-Este es un parser basado en la implementación hecha por Alex Warstadt del formalismo introducido en "A Formalization of Minimalist Syntax" por Chris Collins y Edward Stabler (2016). Su objetivo es determinar si las oraciones introducidas por el usuario son o no gramaticales, y devolver en caso positivo una estructura sintáctica. 
+Este es un parser basado en la implementación hecha por Alex Warstadt del formalismo descrito en "A Formalization of Minimalist Syntax" por Chris Collins y Edward Stabler (2016). Su objetivo es determinar si las oraciones introducidas por el usuario son o no gramaticales, y devolver en caso positivo una estructura sintáctica. 
 
 ## Modo de uso
 Para utilizar este programa es necesario ejecutar el archivo `main.py`, ubicado en la carpeta principal del repositorio. Ejecutado el archivo, aparecerá un menú de cinco opciones: 
