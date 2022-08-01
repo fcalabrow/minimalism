@@ -70,16 +70,15 @@ class Derivation(derivation.Derivation):
             else:
                 return None
 
-        # Rule 2
         if len(triggers) > 1 and len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) == 0 and isinstance(x,SyntacticObjectSet):
             return None
 
-        # Rule 3 - Internal merge
+        # Rule 2 - Internal merge
         if len(triggers) == 1 and triggers[0].label[-1] == '/' and len(self.stages[-1].workspace.w) == 1 and isinstance(x, SyntacticObjectSet):
             #x.lexical_item.copy_features()
             triggers[0].label = triggers[0].label[0:-1]
             if debug == True:
-                print('Aplying rule 3: internal merge (X,Y)')
+                print('Aplying rule 2: internal merge (X,Y)')
                 print('')
             for y in x.syntactic_object_set:
                 if y.category.label == triggers[0].label:
@@ -93,10 +92,10 @@ class Derivation(derivation.Derivation):
                             return True
             return None
 
-        # Rule 4 - Select
+        # Rule 3 - Select
         if len(self.stages[-1].workspace.w) == 1 and len(self.stages[-1].lexical_array.the_list) > 0:
             if debug == True:
-                print('Aplying rule 4: select(Y)')
+                print('Aplying rule 3: select(Y)')
                 print('')
             for li in self.stages[-1].lexical_array.the_list:
                 if (list(li.lexical_item.phon)[0]).label.startswith('[') and len(x.triggers) == 0:
@@ -122,10 +121,10 @@ class Derivation(derivation.Derivation):
                 if len(triggers_y) > 0 and x.category.label in triggers_y:
                     self.automerge(y.idx,index,debug=debug)
                     return True
-                # Rule 7 
+                # Rule 4
             if len(self.stages[-1].lexical_array.the_list) > 0:
                     if debug == True:
-                        print('Aplying rule 7: select(Z)')
+                        print('Aplying rule 4: select(Z)')
                         print('')
                     index_z = min([y.idx for y in self.stages[-1].lexical_array.the_list])
                     self.autoselect(index_z,debug)
@@ -143,10 +142,10 @@ class Derivation(derivation.Derivation):
                     return True
             return None
 
-        # Rule 8 - External merge
+        # Rule 7 - External merge
         if len(x.triggers) > 0 and len(self.stages[-1].workspace.w) == 3:
             if debug == True:
-                print('Aplying rule 8: external merge(Z,Y)')
+                print('Aplying rule 7: external merge(Z,Y)')
                 print('')
             z = self.stages[-1].workspace.find_workspace(index-1)
             if z in self.stages[-1].workspace.w:
