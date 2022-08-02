@@ -1,5 +1,5 @@
 # Parser minimalista
-Este es un parser basado en la implementación de Alex Warstadt del formalismo descrito en "A Formalization of Minimalist Syntax" por Chris Collins y Edward Stabler (2016). Su objetivo es determinar si las oraciones introducidas por el usuario son o no gramaticales, y devolver en caso positivo una estructura sintáctica.
+Este es un parser basado en la implementación de Alex Warstadt del formalismo descrito en ["A Formalization of Minimalist Syntax"](https://onlinelibrary.wiley.com/doi/abs/10.1111/synt.12117) por Chris Collins y Edward Stabler (2016). Su objetivo es determinar si las oraciones introducidas por el usuario son o no gramaticales, y devolver en caso positivo una estructura sintáctica.
 
 El parser es capaz de reconocer oraciones transitivas (*el perro comió el hueso/the dog ate the bone*), oraciones inergativas (*el perro corrió/the dog run*) y oraciones inacusativas (*el perro llegó*/*the dog arrived*)
 
