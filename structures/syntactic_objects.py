@@ -180,6 +180,15 @@ class SyntacticObject(object):
         else:
             return False
 
+    def is_final(self, syster, workspace):
+        if self.c_commands(self, workspace):
+            if syster.immediately_contains(self):
+                return True
+            else:
+                return False
+        else:
+            return True
+    
     def is_derivable(self, lexicon): # Not implemented
         """
         DEFINITION 15:
@@ -266,9 +275,10 @@ class LexicalItemToken(SyntacticObject):
     """
     def __init__(self, lexical_item: LexicalItem, idx: int):
         super(LexicalItemToken, self).__init__(idx)
-        self.lexical_item = lexical_item
-        self.triggers = { f for f in self.lexical_item.syn if type(f) is Trigger_Feature }
-        cat_features = { f for f in self.lexical_item.syn if type(f) is Cat_Feature }
+        import copy
+        self.lexical_item = copy.deepcopy(lexical_item)
+        self.triggers = { copy.deepcopy(f) for f in self.lexical_item.syn if type(f) is Trigger_Feature }
+        cat_features = { copy.deepcopy(f) for f in self.lexical_item.syn if type(f) is Cat_Feature }
         assert len(cat_features) == 1
         (category, ) = cat_features
         self.category = category

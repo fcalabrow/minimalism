@@ -1,14 +1,14 @@
 <?xml version='1.0' ?>
 <root>
     <word>
-        <phon>corrió</phon>
+        <phon>run</phon>
         <syn>
             <cat>V</cat>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>comió</phon>
+        <phon>ate</phon>
         <syn>
             <cat>V</cat>
             <sel>D</sel>
@@ -16,7 +16,7 @@
         <sem>none</sem>
     </word>
         <word>
-        <phon>llegó</phon>
+        <phon>arrived</phon>
         <syn>
             <cat>V</cat>
             <sel>D</sel>
@@ -25,7 +25,7 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>entregó</phon>
+        <phon>gave</phon>
         <syn>
             <cat>V</cat>
             <sel>D</sel>
@@ -34,14 +34,14 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>hueso</phon>
+        <phon>bone</phon>
         <syn>
             <cat>N</cat>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>el</phon>
+        <phon>the</phon>
         <syn>
             <cat>D</cat>
             <sel>N</sel>
@@ -49,22 +49,22 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>al</phon>
+        <phon>to</phon>
         <syn>
             <cat>P</cat>
-            <sel>N</sel>
+            <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>
         <word>
-        <phon>perro</phon>
+        <phon>dog</phon>
         <syn>
             <cat>N</cat>
         </syn>
         <sem>none</sem>
     </word>
         <word>
-        <phon>dueño</phon>
+        <phon>owner</phon>
         <syn>
             <cat>N</cat>
         </syn>
