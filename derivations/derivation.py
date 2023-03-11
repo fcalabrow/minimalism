@@ -57,11 +57,12 @@ class Derivation(object):
             except InteractionError as interaction_error:
                 print(interaction_error)
 
-    def merge_step(self):
+    def merge_step(self, index1=None, index2=None):
         last_stage = self.stages[-1]
         try:
-            index1 = int(input("Enter the index of the first syntactic object you would like to Merge: "))
-            index2 = int(input("Enter the index of the second syntactic object you would like to Merge: "))
+            if index1 == None and index2 == None:
+                index1 = int(input("Enter the index of the first syntactic object you would like to Merge: "))
+                index2 = int(input("Enter the index of the second syntactic object you would like to Merge: "))
         except ValueError:
             raise InteractionError("Merge requires an index (an integer).")
         if last_stage.workspace.is_root(index1) or last_stage.workspace.is_root(index2):
@@ -70,10 +71,11 @@ class Derivation(object):
         else:
             raise InteractionError("Merge(A,B) requires either A or B to be a root.")
 
-    def select_step(self):
+    def select_step(self, index=None):
         last_stage = self.stages[-1]
         try:
-            index = int(input("Enter the index of the token you would like to Select: "))
+            if index == None:
+                index = int(input("Enter the index of the token you would like to Select: "))
             lexical_item_token = last_stage.lexical_array.find_lexical_array(index)
             if lexical_item_token is None:
                 raise InteractionError("There is no lexical item in the lexical array th that index.")
