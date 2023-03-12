@@ -1,33 +1,34 @@
 <?xml version='1.0' ?>
 <root>
     <word>
-        <phon>K8</phon>
-        <syn>
-            <cat>N</cat>
-        </syn>
-        <sem>none</sem>
-    </word>
-    <word>
-        <phon>runs</phon>
+        <phon>fell</phon>
         <syn>
             <cat>V</cat>
-            <sel>N</sel>
+            <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>ate</phon>
+        <phon>John</phon>
         <syn>
-            <cat>V</cat>
-            <sel>N</sel>
-            <sel>N</sel>
+            <cat>D</cat>
         </syn>
         <sem>none</sem>
     </word>
     <word>
-        <phon>apples</phon>
+        <phon>none</phon>
         <syn>
-            <cat>N</cat>
+            <cat>T</cat>
+            <sel>V</sel>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>none</phon>
+        <syn>
+            <cat>C</cat>
+            <sel>T</sel>
         </syn>
         <sem>none</sem>
     </word>
