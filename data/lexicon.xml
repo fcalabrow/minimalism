@@ -9,7 +9,7 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>John</phon>
+        <phon>john</phon>
         <syn>
             <cat>D</cat>
         </syn>
@@ -29,6 +29,29 @@
         <syn>
             <cat>C</cat>
             <sel>T</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>bought</phon>
+        <syn>
+            <cat>V</cat>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>a</phon>
+        <syn>
+            <cat>D</cat>
+            <sel>N</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>television</phon>
+        <syn>
+            <cat>N</cat>
         </syn>
         <sem>none</sem>
     </word>
