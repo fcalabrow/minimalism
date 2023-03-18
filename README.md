@@ -1,2 +1,3 @@
-# minimalism
-Implementation of A Formalization of Minimalist Syntax (Collins &amp; Stabler, 2016)
+# Chart-based minimalist parser
+In order to try this parser, run from the terminal:<br>
+```python parser.py```
