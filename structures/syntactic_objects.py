@@ -233,37 +233,28 @@ class SyntacticObject(object):
         """
         return(not self.c_commands(other=self, in_sos=phase))
 
-    def transfer(self, phase):
-        """
-        DEFINITION 41
-        (a) If SO is a lexical item token 〈〈Sem,Syn,Phon〉,k〉, then TransferPF(Phase,SO) = Phon;
-        (b) If SO = {X,Y} and X and Y in SO are final in Phase, TransferPF(Phase,SO) = TransferPF(Phase,X) ^ TransferPF(Phase,Y) if either Y is the complement of X, or X is the specifier of Y;
-        (c) If SO = {X,Y} and X in SO is final in Phase but Y is not, TransferPF(Phase,SO) = TransferPF(Phase,X);
-        (d) If SO = {X,Y} where both X and Y in SO are nonfinal in Phase, then
-        TransferPF(Phase,SO) = the empty sequence e.
-        (e) TransferPF(Phase,〈PHON,SEM〉) = PHON
-        """
-        phon_list = list()
+    def transfer(self,func_phon_label='∅'):
+        phon_list = list() # Se crea una lista vacía.
 
-        def recursive_transfer(self,phase):
+        def recursive_transfer(self): # Se define una función que se va a aplicar recursivamente 
             if isinstance(self, LexicalItemToken):
                 phon_tuple = (list(self.lexical_item.phon)[0].label,self.idx)
                 if phon_tuple not in phon_list:
                     phon_list.append(phon_tuple)
-            if isinstance(self,SyntacticObjectSet):
+            if isinstance(self, SyntacticObjectSet):
                 if len(list(self.syntactic_object_set)[0].triggers) > 0:
                     x,y = list(self.syntactic_object_set)[0],list(self.syntactic_object_set)[1]
                 else:
                     x,y = list(self.syntactic_object_set)[1],list(self.syntactic_object_set)[0]
                 if isinstance(x, SyntacticObjectSet):
-                    recursive_transfer(y, phase)
-                    recursive_transfer(x, phase)
+                    recursive_transfer(y)
+                    recursive_transfer(x)
                 else:
-                    recursive_transfer(x, phase)
-                    recursive_transfer(y, phase)
+                    recursive_transfer(x)
+                    recursive_transfer(y)
         
-        recursive_transfer(self,phase)
-        phon_string = ' '.join([tuple[0] for tuple in phon_list if tuple[0] != "none"])
+        recursive_transfer(self)
+        phon_string = ' '.join([tuple[0] for tuple in phon_list if tuple[0] != func_phon_label])
         return phon_string
 
 class LexicalItem(object):

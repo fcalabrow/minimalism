@@ -1,26 +1,9 @@
 <?xml version='1.0' ?>
 <root>
     <word>
-        <phon>fell</phon>
-        <syn>
-            <cat>V</cat>
-            <sel>D</sel>
-        </syn>
-        <sem>none</sem>
-    </word>
-    <word>
-        <phon>john</phon>
+        <phon>juan</phon>
         <syn>
             <cat>D</cat>
-        </syn>
-        <sem>none</sem>
-    </word>
-    <word>
-        <phon>none</phon>
-        <syn>
-            <cat>T</cat>
-            <sel>V</sel>
-            <sel>D</sel>
         </syn>
         <sem>none</sem>
     </word>
@@ -33,15 +16,7 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>bought</phon>
-        <syn>
-            <cat>V</cat>
-            <sel>D</sel>
-        </syn>
-        <sem>none</sem>
-    </word>
-    <word>
-        <phon>a</phon>
+        <phon>un</phon>
         <syn>
             <cat>D</cat>
             <sel>N</sel>
@@ -49,9 +24,26 @@
         <sem>none</sem>
     </word>
     <word>
-        <phon>television</phon>
+        <phon>televisor</phon>
         <syn>
             <cat>N</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>compró</phon>
+        <syn>
+            <cat>V</cat>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>none</phon>
+        <syn>
+            <cat>T</cat>
+            <sel>D</sel>
+            <sel>V</sel>
         </syn>
         <sem>none</sem>
     </word>

@@ -1,0 +1,27 @@
+<?xml version='1.0' ?>
+<root>
+    <word>
+        <phon>juan</phon>
+        <syn>
+            <cat>D</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>vino</phon>
+        <syn>
+            <cat>V</cat>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>none</phon>
+        <syn>
+            <cat>C</cat>
+            <sel>V</sel>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+</root>

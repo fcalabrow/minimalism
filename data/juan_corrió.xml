@@ -1,0 +1,34 @@
+<?xml version='1.0' ?>
+<root>
+    <word>
+        <phon>juan</phon>
+        <syn>
+            <cat>D</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>corrió</phon>
+        <syn>
+            <cat>V</cat>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>none</phon>
+        <syn>
+            <cat>T</cat>
+            <sel>V</sel>
+            <sel>D</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+    <word>
+        <phon>none</phon>
+        <syn>
+            <cat>C</cat>
+            <sel>T</sel>
+        </syn>
+        <sem>none</sem>
+    </word>
+</root>
