@@ -1,10 +1,10 @@
 # Chart-based minimalist parser
-In order to try this parser, clone the repo:
+In order to try this parser, assuming you already have Python installed, run these lines from the command line:
 ```
 git clone https://github.com/fcalabrow/minimalism.git
-```
-And run from the command line:
-```
+cd minimalism
+git checkout chart_parser
+pip install -r requirements.txt
 python main.py
 ```
 
