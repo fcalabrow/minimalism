@@ -11,5 +11,4 @@ python main.py
 
 ---
 This project was presented at the [XVIII Congreso SAEL](https://fadelweb.uncoma.edu.ar/?page_id=7768) (Río Negro, Argentina).<br>
-[Here](https://fadelweb.uncoma.edu.ar/wp-content/uploads/2023/07/XVIII-SAEL_Libro-de-resumenes.pdf) is the abstract.<br>
-For more info, check out [this](https://drive.google.com/file/d/1BBzLy_U0Vf0MjPyBI74fiE7eIND6QTLn/view?usp=share_link) presentation.
+[Here](https://drive.google.com/file/d/1RtbW9htDm0T_DFy6SZCAewGVXqSvwOtV/view?usp=drive_link) you may find a brief overview.
